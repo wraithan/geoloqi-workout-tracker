@@ -143,3 +143,5 @@ LOGGING = {
         },
     }
 }
+
+from local import *

@@ -5,8 +5,8 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'workout_tracker.views.home', name='home'),
+    url(r'^register$', 'core.views.register', name='core_register'),
+    url(r'^login$', 'core.views.login', name='core_login'),
     # url(r'^workout_tracker/', include('workout_tracker.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
