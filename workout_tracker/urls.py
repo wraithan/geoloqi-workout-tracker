@@ -6,7 +6,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^register$', 'core.views.register', name='core_register'),
-    url(r'^login$', 'core.views.login', name='core_login'),
+    url(r'^register-callback$', 'core.views.register_callback', name='core_register_callback'),
     # url(r'^workout_tracker/', include('workout_tracker.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
