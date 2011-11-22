@@ -5,8 +5,14 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^register$', 'core.views.register', name='core_register'),
-    url(r'^register-callback$', 'core.views.register_callback', name='core_register_callback'),
+    url(r'^register/geoloqi$',
+        'core.views.register',
+        name='core_register'),
+
+    url(r'^register/geoloqi-callback$',
+        'core.views.register_callback',
+        name='core_register_callback'),
+
     # url(r'^workout_tracker/', include('workout_tracker.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
