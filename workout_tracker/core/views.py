@@ -2,8 +2,9 @@ import json
 from urllib import quote
 from annoying.decorators import render_to
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from core.models import GeoloqiProfile, DailyMileProfile
 import requests
@@ -16,9 +17,9 @@ DAILYMILE_AUTH_URI = 'https://api.dailymile.com/oauth/authorize'
 DAILYMILE_TOKEN_URI = 'https://api.dailymile.com/oauth/token'
 
 def oauth2_url(auth_uri, client_id, redirect_uri):
-    auth_url = '%(auth_uri)s?redirect_uri=%(redirect_uri)s&response_type=code&client_id=%(client_id)s' % {'auth_uri': auth_uri,
-                                                                                                          'client_id': quote(client_id),
-                                                                                                          'redirect_uri': quote(redirect_uri)}
+    return '%(auth_uri)s?redirect_uri=%(redirect_uri)s&response_type=token&client_id=%(client_id)s' % {'auth_uri': auth_uri,
+                                                                                                      'client_id': quote(client_id),
+                                                                                                      'redirect_uri': quote(redirect_uri)}
 
 
 def oauth2_token(token_uri, client_id, client_secret, code, redirect_uri):
@@ -56,7 +57,7 @@ def register_geoloqi_callback(request):
                                       oauth_user_id=auth_stuff['user_id'],
                                       access_token=auth_stuff['access_token'],
                                       refresh_token=auth_stuff['refresh_token'])
-    login(request, user)
+
     return locals()
 
 @login_required
@@ -76,5 +77,4 @@ def register_dailymile_callback(request):
 
     DailyMileProfile.objects.create(user=request.user,
                                     access_token=auth_stuff['access_token'])
-    login(request, user)
     return locals()

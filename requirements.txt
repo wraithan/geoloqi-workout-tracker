@@ -1,3 +1,4 @@
 django
 django-annoying
 oauth2client
+requests

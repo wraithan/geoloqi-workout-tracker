@@ -6,12 +6,20 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^register/geoloqi$',
-        'core.views.register',
-        name='core_register'),
+        'core.views.register_geoloqi',
+        name='core_register_geoloqi'),
 
     url(r'^register/geoloqi-callback$',
-        'core.views.register_callback',
-        name='core_register_callback'),
+        'core.views.register_geoloqi_callback',
+        name='core_register_geoloqi_callback'),
+
+    url(r'^register/dailymile$',
+        'core.views.register_dailymile',
+        name='core_register_dailymile'),
+
+    url(r'^register/dailymile-callback$',
+        'core.views.register_dailymile_callback',
+        name='core_register_dailymile_callback'),
 
     # url(r'^workout_tracker/', include('workout_tracker.foo.urls')),
 
