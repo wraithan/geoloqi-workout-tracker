@@ -31,7 +31,7 @@ def oauth2_token(token_uri, client_id, client_secret, code, redirect_uri):
         'redirect_uri': redirect_uri,
         }
     return json.loads(requests.post(token_uri, data=payload).content)
-    
+
 
 def register_geoloqi(request):
     auth_url = oauth2_url(GEOLOQI_AUTH_URI, settings.GEOLOQI_CLIENT_ID, settings.GEOLOQI_REDIRECT_URI)
@@ -40,6 +40,7 @@ def register_geoloqi(request):
 
 @render_to('core/success.html')
 def register_geoloqi_callback(request):
+
     auth_stuff = oauth2_token(GEOLOQI_TOKEN_URI,
                               settings.GEOLOQI_CLIENT_ID,
                               settings.GEOLOQI_CLIENT_SECRET,
