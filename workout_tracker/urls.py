@@ -21,6 +21,15 @@ urlpatterns = patterns('',
         'core.views.register_dailymile_callback',
         name='core_register_dailymile_callback'),
 
+    url(r'workout/splash$',
+        'django.views.generic.simple.direct_to_template',
+        {'template': 'workout/splash.html'},
+        name='workout_splash')
+
+    url(r'^workout/start$',
+        'core.views.workout_start',
+        name='workout_start'),
+
     # url(r'^workout_tracker/', include('workout_tracker.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

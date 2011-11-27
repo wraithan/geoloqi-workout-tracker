@@ -79,3 +79,10 @@ def register_dailymile_callback(request):
     DailyMileProfile.objects.create(user=request.user,
                                     access_token=auth_stuff['access_token'])
     return locals()
+
+
+@login_required
+@render_to('workout/start.html')
+def workout_start(request, workout_type_id):
+    force_ended_workouts = Workout.force_end_workouts_in_progress(request.user)
+    Workout.object.create(user=request.user, workout_type=workout_type_id)
