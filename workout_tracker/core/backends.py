@@ -29,6 +29,11 @@ class OAuth2Backend(object):
                                               refresh_token=auth_stuff['refresh_token'])
 
         return user
-        
+
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist:
+            return None
         
         

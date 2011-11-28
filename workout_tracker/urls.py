@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
+from django.views.generic.base import TemplateView
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -6,8 +7,7 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^$',
-        'django.views.generic.simple.direct_to_template',
-        {'template': 'core/index.html'},
+        TemplateView.as_view(template_name='core/index.html'),
         name='index'),
 
     url(r'^register/geoloqi$',
@@ -27,8 +27,7 @@ urlpatterns = patterns('',
         name='core_register_dailymile_callback'),
 
     url(r'workout/splash$',
-        'django.views.generic.simple.direct_to_template',
-        {'template': 'workout/splash.html'},
+        TemplateView.as_view(template_name='workout/splash.html'),
         name='workout_splash'),
 
     url(r'^workout/start$',
