@@ -2,10 +2,24 @@
 {% load url from future %}
 {% block title %}Workout{% endblock %}
 {% block content %}
-<a href="{% url 'workout_start' %}">start</a>
-<a href="{% url 'workout_end' %}">end</a>
-<ul>
-{% for workout in user.get_profile.workout_set.all %}
-	<li>{{workout}}</li>
+<a href="{% url 'workout_start' %}"><button class="btn primary">Start</button></a>
+<a href="{% url 'workout_end' %}"><button class="btn success">End</button></a>
+<table>
+<thead>
+	<tr>
+		<th>Start</th>
+		<th>End</th>
+		<th>Duration</th>
+	</tr>
+</thead>
+<tbody>
+{% for workout in user.get_profile.get_workouts_for_display %}
+	<tr>
+		<td>{{workout.start}}</td>
+		<td>{{workout.end}}</td>
+		<td>{{workout.duration}}</td>
+	</tr>
 {% endfor %}
+</tbody>
+</table>
 {% endblock %}

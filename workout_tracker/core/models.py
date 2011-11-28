@@ -26,6 +26,9 @@ class GeoloqiProfile(OAuth2BaseModel):
         else:
             return None
 
+    def get_workouts_for_display(self):
+        return self.workout_set.all().order_by('-start').select_related('workout_type')
+
 
 class DailyMileProfile(OAuth2BaseModel):
     user = models.OneToOneField('auth.User')
@@ -70,6 +73,12 @@ class Workout(models.Model):
             self.save()
             return True
         return False
+
+    def duration(self):
+        if self.end:
+            return self.end - self.start
+        else:
+            return None
 
 
 class WorkoutType(models.Model):
