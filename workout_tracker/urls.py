@@ -26,6 +26,11 @@ urlpatterns = patterns('',
         'core.views.register_dailymile_callback',
         name='core_register_dailymile_callback'),
 
+    url(r'^logout$',
+        'django.contrib.auth.views.logout',
+        {'next_page': '/'},
+        name='logout'),
+
     url(r'workout/splash$',
         TemplateView.as_view(template_name='workout/splash.html'),
         name='workout_splash'),

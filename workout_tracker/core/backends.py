@@ -6,6 +6,15 @@ from core.models import GeoloqiProfile
 
 
 class OAuth2Backend(object):
+    """
+    This backend takes an oauth2 authenticate code and sends it to
+    the service in order to get the access_token.
+    """
+
+    support_object_permisions = False
+    supports_anonymous_user = False
+    supports_inactive_user = False
+
     def authenticate(self, code=None):
         if code is None:
             return None
@@ -35,5 +44,3 @@ class OAuth2Backend(object):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
-        
-        
