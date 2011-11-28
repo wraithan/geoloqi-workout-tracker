@@ -28,6 +28,10 @@ class OAuth2Backend(object):
             user = User.objects.filter(geoloqiprofile__oauth_user_id=auth_stuff['user_id'])
             if user.exists():
                 user = user.get()
+                profile = user.get_profile()
+                profile.access_token=auth_stuff['access_token']
+                profile.refresh_token=auth_stuff['refresh_token']
+                profile.save()
             else:
                 user = User.objects.create(username=auth_stuff['username'],
                                            first_name=auth_stuff['display_name'],
