@@ -5,6 +5,11 @@ from django.conf.urls.defaults import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^$',
+        'django.views.generic.simple.direct_to_template',
+        {'template': 'core/index.html'},
+        name='index'),
+
     url(r'^register/geoloqi$',
         'core.views.register_geoloqi',
         name='core_register_geoloqi'),
@@ -24,7 +29,7 @@ urlpatterns = patterns('',
     url(r'workout/splash$',
         'django.views.generic.simple.direct_to_template',
         {'template': 'workout/splash.html'},
-        name='workout_splash')
+        name='workout_splash'),
 
     url(r'^workout/start$',
         'core.views.workout_start',

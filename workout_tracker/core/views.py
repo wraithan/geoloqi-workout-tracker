@@ -1,36 +1,17 @@
 import json
 from urllib import quote
+
 from annoying.decorators import render_to
+import requests
 from django.conf import settings
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
+
+from core import GEOLOQI_AUTH_URI, GEOLOQI_TOKEN_URI, DAILYMILE_AUTH_URI, DAILYMILE_TOKEN_URI, oauth2_url
 from core.models import GeoloqiProfile, DailyMileProfile
-import requests
 
-
-GEOLOQI_AUTH_URI = 'https://geoloqi.com/oauth/authorize'
-GEOLOQI_TOKEN_URI = 'https://api.geoloqi.com/1/oauth/token'
-
-DAILYMILE_AUTH_URI = 'https://api.dailymile.com/oauth/authorize'
-DAILYMILE_TOKEN_URI = 'https://api.dailymile.com/oauth/token'
-
-def oauth2_url(auth_uri, client_id, redirect_uri):
-    return '%(auth_uri)s?redirect_uri=%(redirect_uri)s&response_type=token&client_id=%(client_id)s' % {'auth_uri': auth_uri,
-                                                                                                      'client_id': quote(client_id),
-                                                                                                      'redirect_uri': quote(redirect_uri)}
-
-
-def oauth2_token(token_uri, client_id, client_secret, code, redirect_uri):
-    payload = {
-        'grant_type': 'authorization_code',
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'code': code,
-        'redirect_uri': redirect_uri,
-        }
-    return json.loads(requests.post(token_uri, data=payload).content)
 
 
 def register_geoloqi(request):
@@ -40,25 +21,9 @@ def register_geoloqi(request):
 
 @render_to('core/success.html')
 def register_geoloqi_callback(request):
-
-    auth_stuff = oauth2_token(GEOLOQI_TOKEN_URI,
-                              settings.GEOLOQI_CLIENT_ID,
-                              settings.GEOLOQI_CLIENT_SECRET,
-                              request.GET['code'],
-                              settings.GEOLOQI_REDIRECT_URI)
-
-    user = User.objects.filter(geoloqiprofile__oauth_user_id=auth_stuff['user_id'])
-    if user.exists():
-        user = user.get()
-    else:
-        user = User.objects.create(username=auth_stuff['username'],
-                                   first_name=auth_stuff['display_name'],
-                                   is_active=True, email='')
-        GeoloqiProfile.objects.create(user=user,
-                                      oauth_user_id=auth_stuff['user_id'],
-                                      access_token=auth_stuff['access_token'],
-                                      refresh_token=auth_stuff['refresh_token'])
-
+    user = authenticate(code=request.GET['code'])
+    if user:
+        login(request, user)
     return locals()
 
 @login_required
