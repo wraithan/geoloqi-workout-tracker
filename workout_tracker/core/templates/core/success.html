@@ -1,2 +1,4 @@
+{% load url from future %}
 <div id="user">User: {{user}}</div>
 <div id="is-authenticated">Is authenticated: {{ user.is_authenticated }}</div>
+<div><a href="{% url 'index' %}">Home</a></div>
