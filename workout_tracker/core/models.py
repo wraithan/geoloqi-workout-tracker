@@ -1,4 +1,7 @@
+from datetime import datetime
+
 from django.db import models
+
 from core import WORKOUT_TYPE_CHOICES
 
 class OAuth2BaseModel(models.Model):
@@ -16,6 +19,13 @@ class GeoloqiProfile(OAuth2BaseModel):
     def __unicode__(self):
         return self.user.username
 
+    def get_current_workout(self):
+        workouts = self.workout_set.filter(end=None)
+        if workouts.exists():
+            return workouts.get()
+        else:
+            return None
+
 
 class DailyMileProfile(OAuth2BaseModel):
     user = models.OneToOneField('auth.User')
@@ -25,14 +35,14 @@ class DailyMileProfile(OAuth2BaseModel):
 
 
 class Workout(models.Model):
-    user = models.ForeignKey('core.GeoloqiProfile')
+    geoloqi_profile = models.ForeignKey('core.GeoloqiProfile')
     start = models.DateTimeField(auto_now_add=True)
     end = models.DateTimeField(blank=True, null=True)
     shipped = models.BooleanField(default=False)
-    workout_type = models.ForeignKey('core.WorkoutType')
+    workout_type = models.ForeignKey('core.WorkoutType', null=True)
 
     def __unicode__(self):
-        return u"%s from %s to %s" % (self.workout_type.name, self.start, self.end)
+        return u"from %s to %s" % (self.start, self.end)
 
     def save(self, forced_end=False, *args, **kwargs):
         super(Workout, self).save(*args, **kwargs)
@@ -44,13 +54,20 @@ class Workout(models.Model):
         pass
 
     @classmethod
-    def force_end_workouts_in_progress(cls, user):
-        unfinished_workouts = user.workouts.filter(end=None)
+    def force_end_workouts_in_progress(cls, geoloqi_profile):
+        unfinished_workouts = geoloqi_profile.workout_set.filter(end=None)
 
         if unfinished_workouts.exists():
             for uw in unfinished_workouts:
                 uw.end = datetime.now()
                 uw.save(forced_end=True)
+            return True
+        return False
+
+    def finish_workout(self):
+        if not self.end:
+            self.end = datetime.now()
+            self.save()
             return True
         return False
 

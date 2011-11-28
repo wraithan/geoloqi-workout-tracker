@@ -1,1 +1,11 @@
-Ohai
+{% extends 'base.html' %}
+{% load url from future %}
+{% block title %}Workout{% endblock %}
+{% block content %}
+<a href="{% url 'workout_start' %}">start</a>
+<a href="{% url 'workout_end' %}">end</a>
+<ul>
+{% for workout in user.get_profile.workout_set.all %}
+	<li>{{workout}}</li>
+{% endfor %}
+{% endblock %}

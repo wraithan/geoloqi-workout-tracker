@@ -125,6 +125,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+AUTH_PROFILE_MODULE = 'core.GeoloqiProfile'
+
 AUTHENTICATION_BACKENDS = (
     'core.backends.OAuth2Backend',
     'django.contrib.auth.backends.ModelBackend',

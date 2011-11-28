@@ -39,6 +39,10 @@ urlpatterns = patterns('',
         'core.views.workout_start',
         name='workout_start'),
 
+    url(r'^workout/end$',
+        'core.views.workout_end',
+        name='workout_end'),
+
     # url(r'^workout_tracker/', include('workout_tracker.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

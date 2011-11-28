@@ -7,11 +7,11 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 
 from core import GEOLOQI_AUTH_URI, GEOLOQI_TOKEN_URI, DAILYMILE_AUTH_URI, DAILYMILE_TOKEN_URI, oauth2_url
-from core.models import GeoloqiProfile, DailyMileProfile
-
+from core.models import GeoloqiProfile, DailyMileProfile, Workout
 
 
 def register_geoloqi(request):
@@ -47,7 +47,16 @@ def register_dailymile_callback(request):
 
 
 @login_required
-@render_to('workout/start.html')
-def workout_start(request, workout_type_id):
-    force_ended_workouts = Workout.force_end_workouts_in_progress(request.user)
-    Workout.object.create(user=request.user, workout_type=workout_type_id)
+def workout_start(request):
+    geoloqi_profile = request.user.get_profile()
+    force_ended_workouts = Workout.force_end_workouts_in_progress(geoloqi_profile=geoloqi_profile)
+    Workout.objects.create(geoloqi_profile=geoloqi_profile)
+    return HttpResponseRedirect(reverse('workout_splash'))
+
+
+@login_required
+def workout_end(request):
+    workout = request.user.get_profile().get_current_workout()
+    if workout:
+        workout.finish_workout()
+    return HttpResponseRedirect(reverse('workout_splash'))
