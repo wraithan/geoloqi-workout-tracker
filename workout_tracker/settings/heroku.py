@@ -5,9 +5,9 @@ urlparse.uses_netloc.append('postgres')
 urlparse.uses_netloc.append('mysql')
 try:
     print 'hai1'
-    if os.environ.has_key('DATABASE_URL'):
+    if os.environ.has_key('SHARED_DATABASE_URL'):
         print 'hai2'
-        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        url = urlparse.urlparse(os.environ['SHARED_DATABASE_URL'])
         print 'hai3'
         DATABASES['default'] = {
             'NAME':     url.path[1:],
