@@ -4,7 +4,7 @@
 {% block content %}
 <div id="login-box">
 {% if not user.is_authenticated %}
-Login via: <a href="{% url 'core_register_geoloqi' %}"><img src="{{ STATIC_URL }}images/geoloqi-logo.png" alt="Geoloqi"/></a>
+<a href="{% url 'core_register_geoloqi' %}"><img src="https://s3.amazonaws.com/geoloqi/sign-in-with-geoloqi.png" alt="Geoloqi"/></a>
 {% else %}
 <div>Ohai {{ user }} <a href="{% url 'logout' %}">logout</a></div>
 <div>Associate with: <a href="{% url 'core_register_dailymile' %}"><img src="{{ STATIC_URL }}images/dailymile-logo.png" alt="DailyMile"/></a></div>

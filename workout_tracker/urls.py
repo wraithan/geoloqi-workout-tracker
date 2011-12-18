@@ -18,6 +18,10 @@ urlpatterns = patterns('',
         'core.views.register_geoloqi_callback',
         name='core_register_geoloqi_callback'),
 
+    url(r'^register/geoloqi/success$',
+        TemplateView.as_view(template_name='core/website_success.html'),
+        name='core_website_success'),
+
     url(r'^register/dailymile$',
         'core.views.register_dailymile',
         name='core_register_dailymile'),

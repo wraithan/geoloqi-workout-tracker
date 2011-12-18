@@ -24,6 +24,9 @@ def register_geoloqi_callback(request):
     user = authenticate(code=request.GET['code'])
     if user:
         login(request, user)
+        if 'state' in request.GET.keys():
+            if request.GET['state'] == 'website':
+                HttpResponseRedirect(reverse('core_website_success'))
     return locals()
 
 @login_required

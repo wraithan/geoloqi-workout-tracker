@@ -21,9 +21,10 @@ DAILYMILE_AUTH_URI = 'https://api.dailymile.com/oauth/authorize'
 DAILYMILE_TOKEN_URI = 'https://api.dailymile.com/oauth/token'
 
 def oauth2_url(auth_uri, client_id, redirect_uri):
-    return '%(auth_uri)s?redirect_uri=%(redirect_uri)s&response_type=token&client_id=%(client_id)s' % {'auth_uri': auth_uri,
-                                                                                                      'client_id': quote(client_id),
-                                                                                                      'redirect_uri': quote(redirect_uri)}
+    return '%(auth_uri)s?redirect_uri=%(redirect_uri)s&response_type=token&client_id=%(client_id)s&state=%(state)s' % {'auth_uri': auth_uri,
+                                                                                                                       'client_id': quote(client_id),
+                                                                                                                       'redirect_uri': quote(redirect_uri),
+                                                                                                                       'state':'website'}
 
 def oauth2_token(token_uri, client_id, client_secret, code, redirect_uri):
     payload = {
